@@ -1,15 +1,20 @@
 import React, { useState } from "react";
 import axios from "axios";
 
+// Using a variable makes it easier to change later if needed
+const API_URL = "https://splitwise-backend-ten.vercel.app";
+
 export default function Auth({ setToken, setUsername }) {
   const [form, setForm] = useState({ username: "", password: "" });
   const [isLogin, setIsLogin] = useState(true);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Update 1: Live URL for Login/Register
     const url = isLogin
-      ? "http://localhost:5000/auth/login"
-      : "http://localhost:5000/auth/register";
+      ? `${API_URL}/auth/login`
+      : `${API_URL}/auth/register`;
 
     try {
       let res;
@@ -20,7 +25,8 @@ export default function Auth({ setToken, setUsername }) {
       } else {
         // Register then login
         await axios.post(url, form);
-        res = await axios.post("http://localhost:5000/auth/login", form);
+        // Update 2: Live URL for Login after Register
+        res = await axios.post(`${API_URL}/auth/login`, form);
       }
 
       // Store token and username
@@ -45,17 +51,21 @@ export default function Auth({ setToken, setUsername }) {
           placeholder="Username"
           value={form.username}
           onChange={(e) => setForm({ ...form, username: e.target.value })}
+          style={{ display: "block", marginBottom: "10px", padding: "8px" }}
         />
         <input
           type="password"
           placeholder="Password"
           value={form.password}
           onChange={(e) => setForm({ ...form, password: e.target.value })}
+          style={{ display: "block", marginBottom: "10px", padding: "8px" }}
         />
-        <button type="submit">{isLogin ? "Login" : "Register"}</button>
+        <button type="submit" style={{ padding: "8px 15px", background: "#28a745", color: "#fff", border: "none", cursor: "pointer" }}>
+          {isLogin ? "Login" : "Register"}
+        </button>
       </form>
       <button
-        style={{ marginTop: "10px" }}
+        style={{ marginTop: "10px", background: "none", border: "none", color: "blue", cursor: "pointer", textDecoration: "underline" }}
         onClick={() => setIsLogin(!isLogin)}
       >
         {isLogin ? "Switch to Register" : "Switch to Login"}

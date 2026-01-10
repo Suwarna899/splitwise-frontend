@@ -3,6 +3,8 @@ import axios from "axios";
 import Groups from "./components/Groups"; 
 import Expenses from "./components/Expenses";
 
+const API_URL = "https://splitwise-backend-ten.vercel.app";
+
 export default function App() {
   const [token, setToken] = useState(localStorage.getItem("token"));
   const [username, setUsername] = useState(localStorage.getItem("username") || "");
@@ -15,7 +17,6 @@ export default function App() {
   const [formData, setFormData] = useState({ username: "", password: "" });
   const [isRegister, setIsRegister] = useState(false);
 
-  // Function to clear everything
   const handleLogout = useCallback(() => {
     localStorage.clear();
     setToken(null);
@@ -26,7 +27,8 @@ export default function App() {
   const fetchGroups = useCallback(async () => {
     if (!token) return;
     try {
-      const res = await axios.get("http://localhost:5000/groups/list", {
+      // Updated to use API_URL
+      const res = await axios.get(`${API_URL}/groups/list`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setGroups(res.data);
@@ -42,7 +44,8 @@ export default function App() {
   const handleAuth = async () => {
     const path = isRegister ? "register" : "login";
     try {
-      const res = await axios.post(`http://localhost:5000/auth/${path}`, formData);
+      // Updated to use API_URL
+      const res = await axios.post(`${API_URL}/auth/${path}`, formData);
       if (!isRegister) {
         setToken(res.data.token);
         setUsername(res.data.username);
@@ -62,16 +65,15 @@ export default function App() {
     if (!token) return alert("Please login again.");
 
     try {
-      // FIX: Removed .toLowerCase() to ensure names match the login username exactly
       const friends = memberInput
         .split(",")
         .map(m => m.trim()) 
         .filter(m => m !== "" && m.toLowerCase() !== username.toLowerCase()); 
 
-      // This ensures your logged-in name and friends names are combined into one list
       const allMembers = [username, ...friends];
 
-      await axios.post("http://localhost:5000/groups/create", 
+      // Updated to use API_URL
+      await axios.post(`${API_URL}/groups/create`, 
         { name: newGroupName, members: allMembers },
         { headers: { Authorization: `Bearer ${token}` } } 
       );
@@ -85,6 +87,7 @@ export default function App() {
     }
   };
 
+  // ... (rest of your UI code remains the same)
   if (!token) {
     return (
       <div style={{ padding: "50px", textAlign: "center", maxWidth: "400px", margin: "auto" }}>
@@ -135,13 +138,11 @@ export default function App() {
 
       <Groups groups={groups} setSelectedGroup={setSelectedGroup} />
 
-      {/* --- THIS SECTION PASSES DATA TO EXPENSES --- */}
       {selectedGroup && (
         <Expenses 
           token={token} 
           username={username} 
           selectedGroup={selectedGroup} 
-          // Find the active group and send its members list down to Expenses
           groupMembers={groups.find(g => g._id === selectedGroup)?.members || [username]} 
         />
       )}
