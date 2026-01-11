@@ -7,7 +7,7 @@
 This is the client-side application for the Splitwise Clone. It provides a clean, intuitive interface for managing shared expenses, built with modern React patterns.
 
 ## 🚀 Live Application
-[Visit the Live Web App](https://splitwise-frontend-ten.vercel.app)
+[Visit the Live Web App](https://splitwise-frontend-two.vercel.app)
 
 ---
 
