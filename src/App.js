@@ -108,7 +108,7 @@ export default function App() {
           {isRegister ? "Sign Up" : "Sign In"}
         </button>
         <p onClick={() => setIsRegister(!isRegister)} style={{cursor:'pointer', color:'blue', marginTop:'15px'}}>
-          {isRegister ? "Need an account? Register" : "Have an account? Login"}
+          {isRegister ? "Have an account? Login" : "Need an account? Register"}
         </p>
       </div>
     );
