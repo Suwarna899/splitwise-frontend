@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import axios from "axios";
 
 // AUTOMATIC URL SWITCH: Uses local during dev, Vercel during production
@@ -21,21 +21,37 @@ export default function Expenses({ token, username, selectedGroup, groupMembers 
     });
   }, [groupMembers]);
 
-  const getExpenses = async () => {
+  // const getExpenses = async () => {
+  //   try {
+  //     const res = await axios.get(`${API_URL}/expenses/list/${selectedGroup}`, {
+  //       headers: { Authorization: `Bearer ${token}` }
+  //     });
+  //     setExpenses(res.data);
+  //   } catch (err) { setExpenses([]); }
+  // };
+  const getExpenses = useCallback(async () => {
     try {
       const res = await axios.get(`${API_URL}/expenses/list/${selectedGroup}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setExpenses(res.data);
-    } catch (err) { setExpenses([]); }
-  };
+    } catch (err) {
+      setExpenses([]);
+    }
+  }, [selectedGroup, token]);
 
-  useEffect(() => { 
+  // useEffect(() => { 
+  //   if (selectedGroup) {
+  //     getExpenses();
+  //     setPayer(username);
+  //   }
+  // }, [selectedGroup, username]);
+  useEffect(() => {
     if (selectedGroup) {
       getExpenses();
       setPayer(username);
     }
-  }, [selectedGroup, username]);
+  }, [selectedGroup, username, getExpenses]);
 
   // --- MATH LOGIC ---
   const { summary, totalSpent } = useMemo(() => {
