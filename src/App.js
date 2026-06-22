@@ -3,7 +3,8 @@ import axios from "axios";
 import Groups from "./components/Groups"; 
 import Expenses from "./components/Expenses";
 
-const API_URL = "https://splitwise-backend-ten.vercel.app";
+const API_URL = "https://splitwise-backend-mu.vercel.app";
+// const API_URL = "http://localhost:5000";
 
 export default function App() {
   const [token, setToken] = useState(localStorage.getItem("token"));

@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 
 // Using a variable makes it easier to change later if needed
-const API_URL = "https://splitwise-backend-ten.vercel.app";
+// const API_URL = "https://splitwise-backend-ten.vercel.app";
+const API_URL = "http://localhost:5000";
 
 export default function Auth({ setToken, setUsername }) {
   const [form, setForm] = useState({ username: "", password: "" });

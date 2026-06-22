@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 // Live Vercel Backend URL
-const API_URL = "https://splitwise-backend-ten.vercel.app";
+const API_URL = "https://splitwise-backend-mu.vercel.app";
+const API_URL = "http://localhost:5000";
 
 export default function Balances({ token, groups = [], selectedGroup, setSelectedGroup }) {
   const [summary, setSummary] = useState({});
